@@ -10,8 +10,8 @@ public class Post {
     private LocalDateTime localDateTime;
 
 
-
-    public Post() { }
+    public Post() {
+    }
 
     public Post(int id, String name, String description, LocalDateTime localDateTime) {
         this.id = id;
@@ -54,14 +54,18 @@ public class Post {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Post post = (Post) o;
-        return id == post.id && name.equals(post.name) && description.equals(post.description) && localDateTime.equals(post.localDateTime);
+        return id == post.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, localDateTime);
+        return Objects.hash(id);
     }
 }
