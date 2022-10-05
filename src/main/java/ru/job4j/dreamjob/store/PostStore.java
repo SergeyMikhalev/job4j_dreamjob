@@ -1,4 +1,5 @@
 package ru.job4j.dreamjob.store;
+
 import ru.job4j.dreamjob.model.Post;
 
 import java.time.LocalDateTime;
@@ -24,5 +25,9 @@ public class PostStore {
 
     public Collection<Post> findAll() {
         return posts.values();
+    }
+
+    public void add(Post post) {
+        posts.put(post.getId(), post);
     }
 }

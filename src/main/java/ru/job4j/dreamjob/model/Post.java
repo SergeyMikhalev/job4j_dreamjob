@@ -20,6 +20,7 @@ public class Post {
         this.localDateTime = localDateTime;
     }
 
+
     public int getId() {
         return id;
     }
