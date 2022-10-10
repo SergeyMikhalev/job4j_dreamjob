@@ -16,18 +16,22 @@
     <div class="row pt-3">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Редактирование вакансии.
+                Редактирование данных соискателя.
             </div>
             <div class="card-body">
-                <form th:action="@{/updatePost}" method="POST" th:object="${post}">
+                <form th:action="@{/updateCandidate}" method="POST" th:object="${candidate}">
                     <input type="hidden" name="id" th:field="*{id}"/>
-                    <input type="hidden" name="id" th:field="*{localDateTime}"/>
+                    <input type="hidden" name="id" th:field="*{registered}"/>
                     <div class="form-group">
-                        <label for="name">Название вакансии</label>
+                        <label for="name">Имя</label>
                         <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
                     </div>
                     <div class="form-group">
-                        <label for="description">Описание вакансии</label>
+                        <label for="name">Фамилия</label>
+                        <input type="text" class="form-control" name="surname" id="surname" th:field="*{surname}">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Описание кандидата</label>
                         <input type="text" class="form-control" name="description" id="description" th:field="*{description}">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
