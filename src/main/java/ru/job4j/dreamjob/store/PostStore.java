@@ -40,4 +40,5 @@ public class PostStore {
     public void update(Post post) {
         posts.replace(post.getId(), post);
     }
+
 }
