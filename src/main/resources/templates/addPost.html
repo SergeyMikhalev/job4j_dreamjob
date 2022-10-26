@@ -21,7 +21,7 @@
             <div class="card-body">
                 <form th:action="@{/createPost}" method="POST" th:object="${post}">
                     <input type="hidden" name="id" th:field="*{id}"/>
-                    <input type="hidden" name="id" th:field="*{localDateTime}"/>
+                    <input type="hidden" name="localDateTime" th:field="*{localDateTime}"/>
                     <div class="form-group">
                         <label for="name">Название вакансии</label>
                         <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
@@ -29,6 +29,10 @@
                     <div class="form-group">
                         <label for="description">Описание вакансии</label>
                         <input type="text" class="form-control" name="description" id="description" th:field="*{description}">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="visible" class="form-check-input" id="visible">
+                        <label class="form-check-label" for="visible">Опубликовать</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

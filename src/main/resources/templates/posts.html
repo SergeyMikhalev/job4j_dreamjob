@@ -19,6 +19,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
+                <th scope="col">Опубликовать</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Опубликовано</th>
             </tr>
@@ -31,6 +32,14 @@
                         <i class="fa fa-edit"></i>
                     </a>
                     <span th:text="${post.name}"></span>
+                </td>
+                <td>
+                    <span th:if="${post.visible}">
+                        <i class="fa fa-check-square-o"></i>
+                    </span>
+                    <span th:if="${!post.visible}">
+                        <i class="fa fa-square-o"></i>
+                    </span>
                 </td>
                 <td th:text="${post.description}"/>
                 <td th:text="${#temporals.format(post.localDateTime,'hh:mm:ss dd-MM-yyyy')}"/>

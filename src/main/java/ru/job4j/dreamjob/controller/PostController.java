@@ -35,7 +35,8 @@ public class PostController {
                 new Post(0,
                         "Заполните поле",
                         "Заполните поле",
-                        LocalDateTime.now()));
+                        LocalDateTime.now(),
+                        true));
         return "addPost";
     }
 

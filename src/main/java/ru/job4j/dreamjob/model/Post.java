@@ -8,18 +8,19 @@ public class Post {
     private String name;
     private String description;
     private LocalDateTime localDateTime;
+    private boolean visible;
 
 
     public Post() {
     }
 
-    public Post(int id, String name, String description, LocalDateTime localDateTime) {
+    public Post(int id, String name, String description, LocalDateTime localDateTime, boolean visible) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.localDateTime = localDateTime;
+        this.visible = visible;
     }
-
 
     public int getId() {
         return id;
@@ -51,6 +52,14 @@ public class Post {
 
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     @Override
