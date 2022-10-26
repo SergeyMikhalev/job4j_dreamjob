@@ -10,7 +10,7 @@ import java.util.Collection;
 public class PostService {
     private final PostStore postStore;
 
-    private PostService(PostStore postStore) {
+    public PostService(PostStore postStore) {
         this.postStore = postStore;
     }
 
