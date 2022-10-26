@@ -9,17 +9,18 @@ public class Post {
     private String description;
     private LocalDateTime localDateTime;
     private boolean visible;
-
+    private City city;
 
     public Post() {
     }
 
-    public Post(int id, String name, String description, LocalDateTime localDateTime, boolean visible) {
+    public Post(int id, String name, String description, LocalDateTime localDateTime, boolean visible, City city) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.localDateTime = localDateTime;
         this.visible = visible;
+        this.city = city;
     }
 
     public int getId() {
@@ -62,6 +63,14 @@ public class Post {
         this.visible = visible;
     }
 
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,5 +86,17 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", description='" + description + '\''
+                + ", localDateTime=" + localDateTime
+                + ", visible=" + visible
+                + ", city=" + city
+                + '}';
     }
 }
