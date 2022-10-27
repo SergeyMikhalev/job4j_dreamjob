@@ -28,7 +28,8 @@ public class CandidateStore {
                         "Плюхин",
                         "Python Middle Developer",
                         LocalDate.now(),
-                        cityService.getDefault())
+                        cityService.getDefault(),
+                        null)
         );
         candidates.put(2,
                 new Candidate(2,
@@ -36,7 +37,8 @@ public class CandidateStore {
                         "Кожевников",
                         "Python Middle Developer",
                         LocalDate.now(),
-                        cityService.getDefault())
+                        cityService.getDefault(),
+                        null)
         );
         candidates.put(3,
                 new Candidate(3,
@@ -44,7 +46,8 @@ public class CandidateStore {
                         "Разорвинога",
                         "Solution Architect",
                         LocalDate.now(),
-                        cityService.getDefault())
+                        cityService.getDefault(),
+                        null)
         );
     }
 
