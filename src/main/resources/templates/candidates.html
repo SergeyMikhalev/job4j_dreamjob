@@ -22,6 +22,7 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Описание</th>
+                <th scope="col">Город</th>
                 <th scope="col">Дата регистрации</th>
             </tr>
             </thead>
@@ -36,6 +37,7 @@
                 </td>
                 <td th:text="${candidate.surname}"/>
                 <td th:text="${candidate.description}"/>
+                <td th:text="${candidate.city.name}"/>
                 <td th:text="${#temporals.format(candidate.registered,'dd-MM-yyyy')}"/>
             </tr>
             </tbody>

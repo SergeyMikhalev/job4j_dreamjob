@@ -29,10 +29,6 @@ public class PostService {
         postStore.add(post);
     }
 
-    private void updateCityInPost(Post post) {
-        post.setCity(cityService.findOrDefault(post.getCity().getId()));
-    }
-
     public Post findById(int id) {
         return postStore.findById(id);
     }
@@ -40,5 +36,9 @@ public class PostService {
     public void update(Post post) {
         updateCityInPost(post);
         postStore.update(post);
+    }
+
+    private void updateCityInPost(Post post) {
+        post.setCity(cityService.findOrDefault(post.getCity().getId()));
     }
 }

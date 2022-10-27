@@ -9,14 +9,16 @@ public class Candidate {
     private String surname;
     private String description;
     private LocalDate registered;
+    private City city;
 
 
-    public Candidate(int id, String name, String surname, String description, LocalDate registered) {
+    public Candidate(int id, String name, String surname, String description, LocalDate registered, City city) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.description = description;
         this.registered = registered;
+        this.city = city;
     }
 
     public int getId() {
@@ -57,6 +59,14 @@ public class Candidate {
 
     public void setRegistered(LocalDate registered) {
         this.registered = registered;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
