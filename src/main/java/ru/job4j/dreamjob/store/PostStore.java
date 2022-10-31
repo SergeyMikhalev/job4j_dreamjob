@@ -2,8 +2,8 @@ package ru.job4j.dreamjob.store;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.services.CityService;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -17,30 +17,28 @@ public class PostStore {
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final AtomicInteger newId = new AtomicInteger(4);
-    private final CityService cityService;
 
-    public PostStore(CityService cityService) {
-        this.cityService = cityService;
+    public PostStore() {
 
         posts.put(1, new Post(
                 1,
                 "Junior Java Job",
                 "Simple job", LocalDateTime.now(),
                 true,
-                cityService.getDefault()));
+                new City(1, "Москва")));
         posts.put(2, new Post(
                 2,
                 "Middle Java Job",
                 "Simple job too",
                 LocalDateTime.now(),
                 true,
-                cityService.getDefault()));
+                new City(1, "Москва")));
         posts.put(3, new Post(3,
                 "Senior Java Job",
                 "Simple job still",
                 LocalDateTime.now(),
                 true,
-                cityService.getDefault()));
+                new City(1, "Москва")));
     }
 
     public Collection<Post> findAll() {

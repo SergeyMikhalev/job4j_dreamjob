@@ -12,8 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.services.CandidateService;
-import ru.job4j.dreamjob.services.CityService;
+import ru.job4j.dreamjob.service.CandidateService;
+import ru.job4j.dreamjob.service.CityService;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -45,7 +45,7 @@ public class CandidateController {
                         "Заполните поле",
                         "Заполните поле",
                         LocalDate.now(),
-                        cityService.getDefault(),
+                        cityService.findById(1),
                         null));
         return "addCandidate";
     }
@@ -54,6 +54,7 @@ public class CandidateController {
     public String createCandidate(@RequestParam("file") MultipartFile file,
                                   @ModelAttribute Candidate candidate) throws IOException {
         candidate.setPhoto(file.getBytes());
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.add(candidate);
         System.out.println(file.getName());
         return "redirect:/candidates";
@@ -70,6 +71,7 @@ public class CandidateController {
     public String updateCandidate(@RequestParam("file") MultipartFile file,
                                   @ModelAttribute Candidate candidate) throws IOException {
         candidate.setPhoto(file.getBytes());
+        candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.update(candidate);
         return "redirect:/candidates";
     }

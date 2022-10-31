@@ -1,4 +1,4 @@
-package ru.job4j.dreamjob.services;
+package ru.job4j.dreamjob.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.City;
@@ -10,7 +10,6 @@ import java.util.Map;
 
 @Service
 public class CityService {
-    private final int defaultCityId = 1;
     private Map<Integer, City> cities = new HashMap<>();
 
     public CityService() {
@@ -25,13 +24,5 @@ public class CityService {
 
     public City findById(int id) {
         return cities.get(id);
-    }
-
-    public City findOrDefault(int id) {
-        return cities.getOrDefault(id, findById(defaultCityId));
-    }
-
-    public City getDefault() {
-        return cities.get(defaultCityId);
     }
 }

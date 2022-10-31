@@ -3,7 +3,7 @@ package ru.job4j.dreamjob.store;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.services.CityService;
+import ru.job4j.dreamjob.model.City;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -17,18 +17,14 @@ public class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private final AtomicInteger newId = new AtomicInteger(4);
 
-    private final CityService cityService;
-
-    public CandidateStore(CityService cityService) {
-        this.cityService = cityService;
-
+    public CandidateStore() {
         candidates.put(1,
                 new Candidate(1,
                         "Николай",
                         "Плюхин",
                         "Python Middle Developer",
                         LocalDate.now(),
-                        cityService.getDefault(),
+                        new City(1, "Москва"),
                         null)
         );
         candidates.put(2,
@@ -37,7 +33,7 @@ public class CandidateStore {
                         "Кожевников",
                         "Python Middle Developer",
                         LocalDate.now(),
-                        cityService.getDefault(),
+                        new City(1, "Москва"),
                         null)
         );
         candidates.put(3,
@@ -46,7 +42,7 @@ public class CandidateStore {
                         "Разорвинога",
                         "Solution Architect",
                         LocalDate.now(),
-                        cityService.getDefault(),
+                        new City(1, "Москва"),
                         null)
         );
     }
