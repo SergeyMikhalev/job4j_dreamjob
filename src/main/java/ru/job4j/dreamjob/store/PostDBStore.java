@@ -1,18 +1,25 @@
 package ru.job4j.dreamjob.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Repository
 public class PostDBStore {
+
+    public static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
 
     private final BasicDataSource pool;
 
@@ -31,14 +38,14 @@ public class PostDBStore {
                             it.getInt("id"),
                             it.getString("name"),
                             it.getString("description"),
-                            LocalDateTime.now(),       //!!!!!!!!!
+                            it.getTimestamp("local_date_time").toLocalDateTime(),
                             it.getBoolean("visible"),
                             new City(it.getInt("city_id"),
                                     "")));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception : ", e);
         }
         return posts;
     }
@@ -46,14 +53,14 @@ public class PostDBStore {
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-        "INSERT INTO post(name, description, local_date_time, visible, city_id ) VALUES (?,?,?,?,?)",
+                     "INSERT INTO post(name, description, local_date_time, visible, city_id ) VALUES (?,?,?,?,?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
-            ps.setString(2,post.getDescription());
-            ps.setDate(3, Date.valueOf(LocalDate.now())); //!!
+            ps.setString(2, post.getDescription());
+            ps.setTimestamp(3, Timestamp.valueOf(post.getLocalDateTime()));
             ps.setBoolean(4, post.isVisible());
-            ps.setInt(5,post.getCity().getId());
+            ps.setInt(5, post.getCity().getId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -61,25 +68,25 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception : ", e);
         }
         return post;
     }
 
-    private void update(Post post) {
+    public void update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      "UPDATE post SET name = ?, description = ?, local_date_time = ?, visible = ?, city_id = ? where id = ?")
         ) {
             ps.setString(1, post.getName());
-            ps.setString(2,post.getDescription());
-            ps.setDate(3, Date.valueOf(LocalDate.now())); //!!
+            ps.setString(2, post.getDescription());
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             ps.setBoolean(4, post.isVisible());
-            ps.setInt(5,post.getCity().getId());
+            ps.setInt(5, post.getCity().getId());
             ps.setInt(6, post.getId());
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception : ", e);
         }
     }
 
@@ -94,14 +101,14 @@ public class PostDBStore {
                             it.getInt("id"),
                             it.getString("name"),
                             it.getString("description"),
-                            null,       //!!!!
+                            it.getTimestamp("local_date_time").toLocalDateTime(),
                             it.getBoolean("visible"),
                             new City(it.getInt("city_id"),
                                     ""));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception : ", e);
         }
         return null;
     }

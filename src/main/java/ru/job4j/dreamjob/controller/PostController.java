@@ -21,18 +21,15 @@ public class PostController {
 
     private final PostService postService;
     private final CityService cityService;
-    private final PostDBStore postDBStore;
 
     public PostController(PostService postService, CityService cityService, PostDBStore postDBStore) {
         this.postService = postService;
         this.cityService = cityService;
-        this.postDBStore = postDBStore;
     }
 
     @GetMapping("/posts")
     public String posts(Model model) {
         model.addAttribute("posts", postService.findAll());
-        postDBStore.findAll().forEach(System.out::println);
         return "posts";
     }
 
