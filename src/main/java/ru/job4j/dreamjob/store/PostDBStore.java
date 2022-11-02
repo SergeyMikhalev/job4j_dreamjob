@@ -7,10 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +18,13 @@ public class PostDBStore {
 
     public static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
 
+    public static final String SELECT_ALL = "SELECT * FROM post";
+    public static final String INSERT =
+            "INSERT INTO post(name, description, local_date_time, visible, city_id VALUES (?,?,?,?,?)";
+    public static final String UPDATE =
+            "UPDATE post SET name = ?, description = ?, local_date_time = ?, visible = ?, city_id = ? where id = ?";
+    public static final String SELECT_BY_ID = "SELECT * FROM post WHERE id = ?";
+
     private final BasicDataSource pool;
 
     public PostDBStore(BasicDataSource pool) {
@@ -30,18 +34,11 @@ public class PostDBStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
+             PreparedStatement ps = cn.prepareStatement(SELECT_ALL)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("local_date_time").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            new City(it.getInt("city_id"),
-                                    "")));
+                    posts.add(getPost(it));
                 }
             }
         } catch (Exception e) {
@@ -53,7 +50,7 @@ public class PostDBStore {
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "INSERT INTO post(name, description, local_date_time, visible, city_id ) VALUES (?,?,?,?,?)",
+                     INSERT,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -76,7 +73,7 @@ public class PostDBStore {
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "UPDATE post SET name = ?, description = ?, local_date_time = ?, visible = ?, city_id = ? where id = ?")
+                     UPDATE)
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
@@ -92,24 +89,28 @@ public class PostDBStore {
 
     public Post findById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(SELECT_BY_ID)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("local_date_time").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            new City(it.getInt("city_id"),
-                                    ""));
+                    return getPost(it);
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception : ", e);
         }
         return null;
+    }
+
+    private Post getPost(ResultSet it) throws SQLException {
+        return new Post(
+                it.getInt("id"),
+                it.getString("name"),
+                it.getString("description"),
+                it.getTimestamp("local_date_time").toLocalDateTime(),
+                it.getBoolean("visible"),
+                new City(it.getInt("city_id"),
+                        ""));
     }
 }
