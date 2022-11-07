@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.service.CityService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +20,10 @@ public class CandidateDBStore {
     public static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
     public static final String SELECT_ALL = "SELECT * FROM candidate";
     public static final String SELECT_BY_ID = "SELECT * FROM candidate WHERE id = ?";
+    public static final String  INSERT =
+            "INSERT INTO candidate(name, surname, description, registered, city_id, photo) VALUES (?,?,?,?,?,?) ";
+public static final String UPDATE =
+        "UPDATE candidate SET name=?, surname=?, description=?, registered=?, city_id=?, photo=? WHERE id=?";
 
     private final BasicDataSource pool;
     private final CityService cityService;
@@ -59,11 +62,48 @@ public class CandidateDBStore {
         return null;
     }
 
-    public void add(Candidate candidate) {
-
+    public Candidate add(Candidate candidate) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     INSERT,
+                     PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, candidate.getName());
+            ps.setString(2, candidate.getSurname());
+            ps.setString(3, candidate.getDescription());
+            ps.setTimestamp(4,
+                    Timestamp.valueOf(LocalDateTime.of(candidate.getRegistered(), LocalTime.MIN)));
+            ps.setInt(5, candidate.getCity().getId());
+            ps.setBytes(6, candidate.getPhoto());
+            System.out.println(ps);
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    candidate.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception : ", e);
+        }
+        return candidate;
     }
 
     public void update(Candidate candidate) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     UPDATE)
+        ) {
+            ps.setString(1, candidate.getName());
+            ps.setString(2, candidate.getSurname());
+            ps.setString(3, candidate.getDescription());
+            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(5, candidate.getCity().getId());
+            ps.setBytes(6, candidate.getPhoto());
+            ps.setInt(7, candidate.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception : ", e);
+        }
     }
 
     private Candidate getCandidate(ResultSet resultSet) throws SQLException {
