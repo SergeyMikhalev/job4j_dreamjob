@@ -20,7 +20,7 @@ public class PostDBStore {
 
     public static final String SELECT_ALL = "SELECT * FROM post";
     public static final String INSERT =
-            "INSERT INTO post(name, description, created, visible, city_id VALUES (?,?,?,?,?)";
+            "INSERT INTO post(name, description, created, visible, city_id) VALUES (?,?,?,?,?)";
     public static final String UPDATE =
             "UPDATE post SET name = ?, description = ?, created = ?, visible = ?, city_id = ? where id = ?";
     public static final String SELECT_BY_ID = "SELECT * FROM post WHERE id = ?";
@@ -58,6 +58,7 @@ public class PostDBStore {
             ps.setTimestamp(3, Timestamp.valueOf(post.getCreated()));
             ps.setBoolean(4, post.isVisible());
             ps.setInt(5, post.getCity().getId());
+            System.out.println(ps);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
