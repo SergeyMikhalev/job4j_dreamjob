@@ -7,18 +7,18 @@ public class Post {
     private int id;
     private String name;
     private String description;
-    private LocalDateTime localDateTime;
+    private LocalDateTime created;
     private boolean visible;
     private City city;
 
     public Post() {
     }
 
-    public Post(int id, String name, String description, LocalDateTime localDateTime, boolean visible, City city) {
+    public Post(int id, String name, String description, LocalDateTime created, boolean visible, City city) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.localDateTime = localDateTime;
+        this.created = created;
         this.visible = visible;
         this.city = city;
     }
@@ -47,12 +47,12 @@ public class Post {
         this.description = description;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     public boolean isVisible() {
@@ -94,7 +94,7 @@ public class Post {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", description='" + description + '\''
-                + ", localDateTime=" + localDateTime
+                + ", localDateTime=" + created
                 + ", visible=" + visible
                 + ", city=" + city
                 + '}';
