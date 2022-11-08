@@ -2,3 +2,5 @@
 target
 .idea
 /src/site/
+/testdb.mv.db
+/testdb.trace.db
