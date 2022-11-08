@@ -1,6 +1,5 @@
 package ru.job4j.dreamjob.controller;
 
-
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;

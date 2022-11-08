@@ -5,35 +5,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.service.CityService;
+import ru.job4j.dreamjob.model.City;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Repository
 public class CandidateDBStore {
-
     public static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
     public static final String SELECT_ALL = "SELECT * FROM candidate";
     public static final String SELECT_BY_ID = "SELECT * FROM candidate WHERE id = ?";
-    public static final String  INSERT =
+    public static final String INSERT =
             "INSERT INTO candidate(name, surname, description, registered, city_id, photo) VALUES (?,?,?,?,?,?) ";
-public static final String UPDATE =
-        "UPDATE candidate SET name=?, surname=?, description=?, registered=?, city_id=?, photo=? WHERE id=?";
+    public static final String UPDATE =
+            "UPDATE candidate SET name=?, surname=?, description=?, registered=?, city_id=?, photo=? WHERE id=?";
 
     private final BasicDataSource pool;
-    private final CityService cityService;
 
-    public CandidateDBStore(BasicDataSource pool, CityService cityService) {
+    public CandidateDBStore(BasicDataSource pool) {
         this.pool = pool;
-        this.cityService = cityService;
     }
 
-    public Collection<Candidate> findAll() {
+    public List<Candidate> findAll() {
         List<Candidate> candidates = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(SELECT_ALL)) {
@@ -45,12 +41,13 @@ public static final String UPDATE =
         } catch (Exception e) {
             LOG.error("Exception : ", e);
         }
-        return null;
+        return candidates;
     }
 
     public Candidate findById(int id) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(SELECT_BY_ID)) {
+            ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
                     return getCandidate(it);
@@ -64,8 +61,7 @@ public static final String UPDATE =
 
     public Candidate add(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     INSERT,
+             PreparedStatement ps = cn.prepareStatement(INSERT,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
@@ -75,7 +71,6 @@ public static final String UPDATE =
                     Timestamp.valueOf(LocalDateTime.of(candidate.getRegistered(), LocalTime.MIN)));
             ps.setInt(5, candidate.getCity().getId());
             ps.setBytes(6, candidate.getPhoto());
-            System.out.println(ps);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -90,8 +85,7 @@ public static final String UPDATE =
 
     public void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     UPDATE)
+             PreparedStatement ps = cn.prepareStatement(UPDATE)
         ) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getSurname());
@@ -112,7 +106,7 @@ public static final String UPDATE =
                 resultSet.getString("surname"),
                 resultSet.getString("description"),
                 resultSet.getTimestamp("registered").toLocalDateTime().toLocalDate(),
-                cityService.findById(resultSet.getInt("city_id")),
+                new City(resultSet.getInt("city_id"), ""),
                 resultSet.getBytes("photo")
         );
     }
