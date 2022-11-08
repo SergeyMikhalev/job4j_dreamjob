@@ -49,8 +49,7 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     INSERT,
+             PreparedStatement ps = cn.prepareStatement(INSERT,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -58,7 +57,6 @@ public class PostDBStore {
             ps.setTimestamp(3, Timestamp.valueOf(post.getCreated()));
             ps.setBoolean(4, post.isVisible());
             ps.setInt(5, post.getCity().getId());
-            System.out.println(ps);
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -73,8 +71,7 @@ public class PostDBStore {
 
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     UPDATE)
+             PreparedStatement ps = cn.prepareStatement(UPDATE)
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
