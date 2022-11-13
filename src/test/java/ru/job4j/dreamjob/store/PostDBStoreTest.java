@@ -27,6 +27,7 @@ public class PostDBStoreTest {
              Statement st = cn.createStatement()) {
             st.execute("DELETE FROM post");
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

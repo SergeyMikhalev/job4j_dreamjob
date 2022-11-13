@@ -26,6 +26,7 @@ public class CandidateDBStoreTest {
              Statement st = cn.createStatement()) {
             st.execute("DELETE FROM candidate");
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
