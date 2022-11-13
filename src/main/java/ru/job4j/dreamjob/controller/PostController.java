@@ -13,7 +13,10 @@ import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 import ru.job4j.dreamjob.store.PostDBStore;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+
+import static ru.job4j.dreamjob.controller.utils.ViewUtils.checkUserOrSetDefault;
 
 @ThreadSafe
 @Controller
@@ -28,13 +31,15 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public String posts(Model model) {
+    public String posts(Model model, HttpSession session) {
+        checkUserOrSetDefault(model, session);
         model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/formAddPost")
-    public String addPost(Model model) {
+    public String addPost(Model model, HttpSession session) {
+        checkUserOrSetDefault(model, session);
         model.addAttribute("post",
                 new Post(0,
                         "Заполните поле",
@@ -53,7 +58,8 @@ public class PostController {
     }
 
     @GetMapping("/formUpdatePost/{postId}")
-    public String formUpdatePost(Model model, @PathVariable("postId") int id) {
+    public String formUpdatePost(Model model, @PathVariable("postId") int id, HttpSession session) {
+        checkUserOrSetDefault(model, session);
         model.addAttribute("post", postService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
