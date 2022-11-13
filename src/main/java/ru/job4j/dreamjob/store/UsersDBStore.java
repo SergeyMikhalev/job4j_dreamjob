@@ -13,9 +13,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
-public class UserDBStore {
+public class UsersDBStore {
 
-    public static final Logger LOG = LoggerFactory.getLogger(UserDBStore.class.getName());
+    public static final Logger LOG = LoggerFactory.getLogger(UsersDBStore.class.getName());
     private final BasicDataSource pool;
 
     public static final String INSERT =
@@ -24,7 +24,7 @@ public class UserDBStore {
     public static final String FIND_BY_EMAIL_AND_PASS =
             "SELECT * FROM users WHERE email = ? and password =?";
 
-    public UserDBStore(BasicDataSource pool) {
+    public UsersDBStore(BasicDataSource pool) {
         this.pool = pool;
     }
 

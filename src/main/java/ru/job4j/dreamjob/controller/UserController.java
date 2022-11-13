@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.model.User;
-import ru.job4j.dreamjob.service.UserService;
+import ru.job4j.dreamjob.service.UsersService;
 
 import java.util.Optional;
 
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final UsersService usersService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UsersService usersService) {
+        this.usersService = usersService;
     }
 
     @GetMapping("/formAddUser")
@@ -32,8 +32,7 @@ public class UserController {
 
     @PostMapping("/createUser")
     public String createPost(Model model, @ModelAttribute User user) {
-        System.out.println(user);
-        Optional<User> regUser = userService.add(user);
+        Optional<User> regUser = usersService.add(user);
         if (regUser.isEmpty()) {
             model.addAttribute("error",
                     "Ошибка регистрации: Эта электронная почта уже используется");
@@ -50,11 +49,9 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user) {
-        System.out.println(user);
-        Optional<User> userDb = userService.findUserByEmailAndPassword(
+        Optional<User> userDb = usersService.findUserByEmailAndPassword(
                 user.getEmail(), user.getPassword()
         );
-        System.out.println("From DB -> " + userDb);
         if (userDb.isEmpty()) {
             return "redirect:/loginPage?fail=true";
         }
