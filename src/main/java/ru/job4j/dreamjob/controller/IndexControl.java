@@ -12,4 +12,5 @@ public class IndexControl {
     public String index() {
         return "index";
     }
+
 }

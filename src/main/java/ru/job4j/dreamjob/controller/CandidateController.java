@@ -55,7 +55,6 @@ public class CandidateController {
         candidate.setPhoto(file.getBytes());
         candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidateService.add(candidate);
-        System.out.println(file.getName());
         return "redirect:/candidates";
     }
 
