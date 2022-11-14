@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
 
-import static ru.job4j.dreamjob.controller.utils.ViewUtils.checkUserOrSetDefault;
+import static ru.job4j.dreamjob.util.ViewUtils.checkUserOrSetDefault;
 
 @ThreadSafe
 @Controller

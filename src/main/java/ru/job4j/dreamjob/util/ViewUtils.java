@@ -1,13 +1,16 @@
-package ru.job4j.dreamjob.controller.utils;
+package ru.job4j.dreamjob.util;
 
 import org.springframework.ui.Model;
 import ru.job4j.dreamjob.model.User;
 
 import javax.servlet.http.HttpSession;
 
-public class ViewUtils {
+public final class ViewUtils {
 
     public static final String GUEST = "Гость";
+
+    private ViewUtils() {
+    }
 
     public static void checkUserOrSetDefault(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");

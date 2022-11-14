@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-import static ru.job4j.dreamjob.controller.utils.ViewUtils.checkUserOrSetDefault;
+import static ru.job4j.dreamjob.util.ViewUtils.checkUserOrSetDefault;
 
 @Controller
 public class UserController {

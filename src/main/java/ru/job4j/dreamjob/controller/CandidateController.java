@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static ru.job4j.dreamjob.controller.utils.ViewUtils.checkUserOrSetDefault;
+import static ru.job4j.dreamjob.util.ViewUtils.checkUserOrSetDefault;
 
 @ThreadSafe
 @Controller
