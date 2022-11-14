@@ -59,10 +59,10 @@ public class UsersDBStore {
                 if (rs.next()) {
                     result = Optional.of(
                             new User(
-                                    rs.getInt(1),
-                                    rs.getString(2),
-                                    rs.getString(3),
-                                    rs.getString(4)
+                                    rs.getInt("id"),
+                                    rs.getString("name"),
+                                    rs.getString("email"),
+                                    rs.getString("password")
                             )
                     );
                 }
