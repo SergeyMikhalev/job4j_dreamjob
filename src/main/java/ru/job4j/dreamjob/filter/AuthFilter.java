@@ -6,9 +6,13 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 @Component
 public class AuthFilter implements Filter {
+
+    private static final Set<String> ALLOWED_UNREGISTERED =
+            Set.of("loginPage", "login", "index", "formAddUser", "createUser");
 
     @Override
     public void doFilter(
@@ -18,7 +22,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
-        if (uri.endsWith("loginPage") || uri.endsWith("login") || uri.endsWith("index")) {
+        if (uriAllowedForUnregistered(uri)) {
             chain.doFilter(req, res);
             return;
         }
@@ -27,5 +31,9 @@ public class AuthFilter implements Filter {
             return;
         }
         chain.doFilter(req, res);
+    }
+
+    private boolean uriAllowedForUnregistered(String uri) {
+        return ALLOWED_UNREGISTERED.stream().anyMatch(uri::endsWith);
     }
 }
