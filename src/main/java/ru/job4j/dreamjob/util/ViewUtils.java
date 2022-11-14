@@ -17,6 +17,6 @@ public final class ViewUtils {
         if (user == null) {
             user = new User(0, GUEST, null, null);
         }
-        model.addAttribute("user", user);
+        model.addAttribute("regUser", user);
     }
 }
