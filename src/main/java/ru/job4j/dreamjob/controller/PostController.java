@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
-import ru.job4j.dreamjob.store.PostDBStore;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -25,7 +24,7 @@ public class PostController {
     private final PostService postService;
     private final CityService cityService;
 
-    public PostController(PostService postService, CityService cityService, PostDBStore postDBStore) {
+    public PostController(PostService postService, CityService cityService) {
         this.postService = postService;
         this.cityService = cityService;
     }
